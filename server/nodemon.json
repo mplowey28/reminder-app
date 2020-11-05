@@ -1,0 +1,7 @@
+{
+	"env": {
+		"MONGO_USER": "Matthew",
+		"MONGO_PASSWORD": "PsHM4Q2MBneEkPw",
+		"MONGO_DB": "reminder-app"
+	}
+}
