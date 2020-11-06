@@ -1,10 +1,20 @@
 import express, { Express } from "express";
+import BodyParser from "body-parser";
 import mongoose from "mongoose";
-const BodyParser = require("body-parser");
 import cors from "cors";
+import http from "http";
+import socket from "socket.io";
+
 import todoRoutes from "./routes";
+import * as todoController from "./controllers/todos/index";
 
 const app: Express = express();
+const server = http.createServer(app);
+const io = socket(server);
+
+io.on("connection", socket => {
+	console.log("Connected to Socket!!" + socket.id);
+});
 
 const PORT: string | number = process.env.PORT || 4000;
 
