@@ -2,21 +2,27 @@ import React, { useEffect, useState } from "react";
 import TodoItem from "./components/TodoItem";
 import AddTodo from "./components/AddTodo";
 import { getTodos, addTodo, updateTodo, deleteTodo } from "./API";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:4000");
 
 const App: React.FC = () => {
 	const [todos, setTodos] = useState<ITodo[]>([]);
 
 	useEffect(() => {
 		fetchTodos();
+		socket.on("connection", (data: any) => {
+			console.log("hello");
+		});
 	}, []);
 
-	const fetchTodos = (): void => {
+	const fetchTodos = () => {
 		getTodos()
 			.then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
 			.catch((err: Error) => console.log(err));
 	};
 
-	const handleSaveTodo = (e: React.FormEvent, formData: ITodo): void => {
+	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
 		e.preventDefault();
 		addTodo(formData)
 			.then(({ status, data }) => {
@@ -28,7 +34,7 @@ const App: React.FC = () => {
 			.catch(err => console.log(err));
 	};
 
-	const handleUpdateTodo = (todo: ITodo): void => {
+	const handleUpdateTodo = (todo: ITodo) => {
 		updateTodo(todo)
 			.then(({ status, data }) => {
 				if (status !== 200) {
@@ -39,7 +45,7 @@ const App: React.FC = () => {
 			.catch(err => console.log(err));
 	};
 
-	const handleDeleteTodo = (_id: string): void => {
+	const handleDeleteTodo = (_id: string) => {
 		deleteTodo(_id)
 			.then(({ status, data }) => {
 				if (status !== 200) {

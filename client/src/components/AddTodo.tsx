@@ -7,7 +7,7 @@ type Props = {
 const AddTodo: React.FC<Props> = ({ saveTodo }) => {
 	const [formData, setFormData] = useState<ITodo | {}>();
 
-	const handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
+	const handleForm = (e: React.FormEvent<HTMLInputElement>) => {
 		setFormData({
 			...formData,
 			[e.currentTarget.id]: e.currentTarget.value,
