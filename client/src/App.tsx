@@ -4,13 +4,16 @@ import AddTodo from "./components/AddTodo";
 import { getTodos, addTodo, updateTodo, deleteTodo } from "./API";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://localhost:4000");
 
 const App: React.FC = () => {
 	const [todos, setTodos] = useState<ITodo[]>([]);
 
 	useEffect(() => {
 		fetchTodos();
+		socket.on("connection", (data: any) => {
+			console.log("hello");
+		});
 	}, []);
 
 	const fetchTodos = () => {

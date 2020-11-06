@@ -15,6 +15,9 @@ const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
 io.on("connection", socket => {
     console.log("Connected to Socket!!" + socket.id);
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
 });
 const PORT = process.env.PORT || 4000;
 app.use(cors_1.default());
@@ -23,9 +26,9 @@ app.use(routes_1.default);
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.cdfh2.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose_1.default.set("useFindAndModify", false);
-mongoose_1.default
-    .connect(uri, options)
-    .then(() => app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)))
-    .catch(error => {
+mongoose_1.default.connect(uri, options).catch(error => {
     throw error;
+});
+server.listen(PORT, () => {
+    console.log(`App Server Listening at ${PORT}`);
 });

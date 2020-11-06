@@ -6,7 +6,6 @@ import http from "http";
 import socket from "socket.io";
 
 import todoRoutes from "./routes";
-import * as todoController from "./controllers/todos/index";
 
 const app: Express = express();
 const server = http.createServer(app);
@@ -14,6 +13,9 @@ const io = socket(server);
 
 io.on("connection", socket => {
 	console.log("Connected to Socket!!" + socket.id);
+	socket.on("disconnect", () => {
+		console.log("Client disconnected");
+	});
 });
 
 const PORT: string | number = process.env.PORT || 4000;
@@ -25,13 +27,10 @@ const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose.set("useFindAndModify", false);
 
-mongoose
-	.connect(uri, options)
-	.then(() =>
-		app.listen(PORT, () =>
-			console.log(`Server running on http://localhost:${PORT}`)
-		)
-	)
-	.catch(error => {
-		throw error;
-	});
+mongoose.connect(uri, options).catch(error => {
+	throw error;
+});
+
+server.listen(PORT, () => {
+	console.log(`App Server Listening at ${PORT}`);
+});
