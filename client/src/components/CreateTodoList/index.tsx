@@ -6,23 +6,20 @@ type Props = {
 };
 
 const CreateTodoList = ({}) => {
-    const [formData, setFormData] = useState<ITodo | {}>()
+    const [todoListName, setTodoListName] = useState<ITodoListName | {}>()
 
     const handleForm = (e: React.FormEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
-			[e.currentTarget.id]: e.currentTarget.value,
-		});
+		setTodoListName({...todoListName, [e.currentTarget.name]: e.currentTarget.value,});
     };
     
 	return (
         <FormContainer>
             <CreatedTodoListForm>
                 <NameInputContainer>
-                    <FormInput onChange={handleForm} type='text' id='name' placeholder ="e.g., Grocery list" />
+                    <FormInput onChange={handleForm} type='text' id='name' placeholder ="e.g., Grocery list" required/>
                 </NameInputContainer>
                 <ButtonInputContainer>
-                    <FormButton disabled={formData === undefined ? true : false}>Create New Todo List</FormButton>
+                    <FormButton disabled={todoListName === undefined ? true : false}>Create New Todo List</FormButton>
                 </ButtonInputContainer>
             </CreatedTodoListForm>
         </FormContainer>

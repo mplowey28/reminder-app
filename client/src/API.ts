@@ -21,6 +21,7 @@ export const addTodo = async (
 			name: formData.name,
 			description: formData.description,
 			status: false,
+			cost: formData.cost
 		};
 
 		const saveTodo: AxiosResponse<ApiDataType> = await axios.post(

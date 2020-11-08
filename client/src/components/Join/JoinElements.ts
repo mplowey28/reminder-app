@@ -15,3 +15,9 @@ export const Heading = styled.h1`
 	padding-bottom: 10px;
 	border-bottom: 2px solid white;
 `;
+
+export const TodoListsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 80%
+`
