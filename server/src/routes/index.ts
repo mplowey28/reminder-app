@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Response, Request } from "express";
 import {
 	getTodos,
 	addTodo,
@@ -7,6 +7,10 @@ import {
 } from "../controllers/todos";
 
 const router: Router = Router();
+
+router.get("/", (req: Request, res: Response) => {
+	res.send("server is up and running");
+});
 
 router.get("/todos", getTodos);
 

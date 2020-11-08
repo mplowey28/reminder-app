@@ -13,7 +13,7 @@ const routes_1 = __importDefault(require("./routes"));
 const app = express_1.default();
 const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
-io.on("connection", socket => {
+io.on("connection", (socket) => {
     console.log("Connected to Socket!!" + socket.id);
     socket.on("disconnect", () => {
         console.log("Client disconnected");
