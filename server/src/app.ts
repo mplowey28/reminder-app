@@ -3,15 +3,14 @@ import BodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import http from "http";
-import socket from "socket.io";
-
+import ioserver, { Socket } from "socket.io";
 import todoRoutes from "./routes";
 
 const app: Express = express();
 const server = http.createServer(app);
-const io = socket(server);
+const io = ioserver(server);
 
-io.on("connection", socket => {
+io.on("connection", (socket: Socket) => {
 	console.log("Connected to Socket!!" + socket.id);
 	socket.on("disconnect", () => {
 		console.log("Client disconnected");
