@@ -70,5 +70,3 @@ const TodoList: React.FC<Props> = ({ deleteTodoList, todoList }) => {
 		</main>
 	);
 };
-
-export default TodoList;

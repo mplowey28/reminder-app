@@ -3,13 +3,12 @@ import BodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import http from "http";
-import socket from "socket.io";
-
+import ioserver, { Socket } from "socket.io";
 import todoRoutes from "./routes";
 
 const app: Express = express();
 const server = http.createServer(app);
-const io = socket(server);
+const io = ioserver(server);
 
 const PORT: string | number = process.env.PORT || 4000;
 
