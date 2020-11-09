@@ -1,8 +1,7 @@
 interface ITodoListName {
-	_id: string;
+	_id?: string;
 	name: string;
-	status: boolean;
-	todos: ITodo[]
+	todos?: ITodo[]
 	createdAt?: string;
 	updatedAt?: string;
 }

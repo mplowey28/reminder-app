@@ -13,6 +13,19 @@ export const TodoListOuterContainer = styled.ul`
 export const TodoListInnerContainer = styled(Link)`
     width: 100%;
     height: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+	&:hover {
+		transition: all 0.2s ease-in-out;
+		background: #f3f3f3;
+	}
+	&:hover,
+	&:visited,
+	&:link,
+	&:active {
+		text-decoration: none;
+		color: #2e2e2e;
+	}
 `
 
 export const TodoListNameContainer = styled.div`
