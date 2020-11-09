@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {
+	getTodoLists,
+	addTodoList,
 	getTodos,
 	addTodo,
 	updateTodo,
@@ -7,6 +9,10 @@ import {
 } from "../controllers/todos";
 
 const router: Router = Router();
+
+router.get("/todoLists", getTodoLists);
+
+router.post("/add-todolist", addTodoList)
 
 router.get("/todos", getTodos);
 

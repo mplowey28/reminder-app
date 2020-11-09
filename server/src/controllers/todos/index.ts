@@ -1,6 +1,35 @@
 import { Response, Request } from "express";
-import { ITodo } from "./../../types/todo";
+import { ITodo, ITodoList } from "./../../types/todo";
 import Todo from "../../models/todo";
+import TodoList from "../../models/todoList";
+
+const getTodoLists = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const todoLists: ITodoList[] = await TodoList.find();
+		res.status(200).json({ todoLists });
+	} catch (error) {
+		throw error;
+	}
+}
+
+const addTodoList = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const body = req.body as Pick<ITodoList, "name" | "status">;
+		const todoList: ITodoList = new TodoList({
+			name: body.name,
+			status: body.status,
+		});
+
+		const newTodoList: ITodoList = await todoList.save();
+		const allTodoLists: ITodoList[] = await TodoList.find();
+
+		res
+			.status(201)
+			.json({ message: "TodoList added", todoList: newTodoList, todoLists: allTodoLists });
+	} catch (error) {
+		throw error;
+	}
+};
 
 const getTodos = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -69,4 +98,4 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-export { getTodos, addTodo, updateTodo, deleteTodo };
+export { getTodoLists, addTodoList, getTodos, addTodo, updateTodo, deleteTodo };

@@ -1,71 +1,65 @@
 import React, { useEffect, useState } from "react";
-import TodoItem from "./components/TodoItem";
-import AddTodo from "./components/AddTodo";
-import { getTodos, addTodo, updateTodo, deleteTodo } from "./API";
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:4000");
+import TodoList from './components/TodoList'
+import AddTodoList from "./components/AddTodoList";
+import { getTodoLists, addTodoList, updateTodoList, deleteTodoList } from "./API";
 
 const App: React.FC = () => {
-	const [todos, setTodos] = useState<ITodo[]>([]);
+	const [todoLists, setTodoLists] = useState<ITodoList[]>([]);
 
 	useEffect(() => {
-		fetchTodos();
-		socket.on("connection", (data: any) => {
-			console.log("hello");
-		});
+		fetchTodoLists();
 	}, []);
 
-	const fetchTodos = () => {
-		getTodos()
-			.then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
+	const fetchTodoLists = () => {
+		getTodoLists()
+			.then(({ data: { todoLists } }: ITodoList[] | any) => setTodoLists(todoLists))
 			.catch((err: Error) => console.log(err));
 	};
 
-	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
+	const handleSaveTodoList = (e: React.FormEvent, formData: ITodoList) => {
 		e.preventDefault();
-		addTodo(formData)
+		addTodoList(formData)
 			.then(({ status, data }) => {
 				if (status !== 201) {
-					throw new Error("Error! Todo not saved");
+					throw new Error("Error! TodoList not saved");
 				}
-				setTodos(data.todos);
+				setTodoLists(data.todoLists);
 			})
 			.catch(err => console.log(err));
 	};
 
-	const handleUpdateTodo = (todo: ITodo) => {
-		updateTodo(todo)
+	const handleUpdateTodoList = (todoList: ITodoList) => {
+		updateTodoList(todoList)
 			.then(({ status, data }) => {
 				if (status !== 200) {
 					throw new Error("Error! Todo not updated");
 				}
-				setTodos(data.todos);
+				setTodoLists(data.todoLists);
 			})
 			.catch(err => console.log(err));
 	};
 
 	const handleDeleteTodo = (_id: string) => {
-		deleteTodo(_id)
+		deleteTodoList(_id)
 			.then(({ status, data }) => {
 				if (status !== 200) {
 					throw new Error("Error! Todo not deleted");
 				}
-				setTodos(data.todos);
+				setTodoLists(data.todoLists);
 			})
 			.catch(err => console.log(err));
 	};
 
 	return (
 		<main className='App'>
-			<h1>Reminders</h1>
-			<AddTodo saveTodo={handleSaveTodo} />
-			{todos.map((todo: ITodo) => (
-				<TodoItem
-					key={todo._id}
-					updateTodo={handleUpdateTodo}
-					deleteTodo={handleDeleteTodo}
-					todo={todo}
+			<h1>Todo Lists</h1>
+			<AddTodoList saveTodoList={handleSaveTodoList} />
+			{todoLists.map((todoList: ITodoList) => (
+				<TodoList
+					key={todoList._id}
+					updateTodoList={handleUpdateTodoList}
+					deleteTodoList={handleDeleteTodo}
+					todoList={todoList}
 				/>
 			))}
 		</main>

@@ -5,3 +5,8 @@ export interface ITodo extends Document {
 	description: string;
 	status: boolean;
 }
+
+export interface ITodoList extends Document {
+	name: string;
+	status: boolean;
+}

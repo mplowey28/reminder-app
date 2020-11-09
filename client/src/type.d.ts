@@ -1,3 +1,16 @@
+interface ITodoList {
+	_id?: string;
+	name: string;
+	status: boolean;
+	todos?: ITodo[]
+	createdAt?: string;
+	updatedAt?: string;
+}
+
+interface TodoListProps {
+	todoList: ITodoList
+}
+
 interface ITodo {
 	_id: string;
 	name: string;
@@ -15,5 +28,7 @@ type ApiDataType = {
 	message: string;
 	status: string;
 	todos: ITodo[];
+	todoLists: ITodoList[];
 	todo?: ITodo;
+	todoList?: ITodoList;
 };

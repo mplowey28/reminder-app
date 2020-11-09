@@ -12,8 +12,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.getTodos = void 0;
+exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.getTodos = exports.addTodoList = exports.getTodoLists = void 0;
 const todo_1 = __importDefault(require("../../models/todo"));
+const todoList_1 = __importDefault(require("../../models/todoList"));
+const getTodoLists = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const todoLists = yield todoList_1.default.find();
+        res.status(200).json({ todoLists });
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.getTodoLists = getTodoLists;
+const addTodoList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const body = req.body;
+        const todoList = new todoList_1.default({
+            name: body.name,
+            status: body.status,
+        });
+        const newTodoList = yield todoList.save();
+        const allTodoLists = yield todoList_1.default.find();
+        res
+            .status(201)
+            .json({ message: "TodoList added", todoList: newTodoList, todoLists: allTodoLists });
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.addTodoList = addTodoList;
 const getTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todos = yield todo_1.default.find();
