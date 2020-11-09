@@ -1,5 +1,8 @@
 import { Router, Response, Request } from "express";
 import {
+	getTodoLists,
+	addTodoList,
+	deleteTodoList,
 	getTodos,
 	addTodo,
 	updateTodo,
@@ -8,9 +11,11 @@ import {
 
 const router: Router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-	res.send("server is up and running");
-});
+router.get("/todoLists", getTodoLists);
+
+router.post("/add-todolist", addTodoList);
+
+router.delete("/delete-todolist/:id", deleteTodoList);
 
 router.get("/todos", getTodos);
 

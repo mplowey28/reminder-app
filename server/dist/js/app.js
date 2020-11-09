@@ -13,12 +13,6 @@ const routes_1 = __importDefault(require("./routes"));
 const app = express_1.default();
 const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
-io.on("connection", (socket) => {
-    console.log("Connected to Socket!!" + socket.id);
-    socket.on("disconnect", () => {
-        console.log("Client disconnected");
-    });
-});
 const PORT = process.env.PORT || 4000;
 app.use(cors_1.default());
 app.use(body_parser_1.default.json());

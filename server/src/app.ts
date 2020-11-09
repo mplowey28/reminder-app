@@ -10,13 +10,6 @@ const app: Express = express();
 const server = http.createServer(app);
 const io = ioserver(server);
 
-io.on("connection", (socket: Socket) => {
-	console.log("Connected to Socket!!" + socket.id);
-	socket.on("disconnect", () => {
-		console.log("Client disconnected");
-	});
-});
-
 const PORT: string | number = process.env.PORT || 4000;
 
 app.use(cors());
