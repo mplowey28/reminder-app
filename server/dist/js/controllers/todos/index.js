@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.getTodos = exports.addTodoList = exports.getTodoLists = void 0;
+exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.getTodos = exports.deleteTodoList = exports.addTodoList = exports.getTodoLists = void 0;
 const todo_1 = __importDefault(require("../../models/todo"));
 const todoList_1 = __importDefault(require("../../models/todoList"));
 const getTodoLists = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,6 +43,21 @@ const addTodoList = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.addTodoList = addTodoList;
+const deleteTodoList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const deletedTodoList = yield todoList_1.default.findByIdAndRemove(req.params.id);
+        const allTodoLists = yield todo_1.default.find();
+        res.status(200).json({
+            message: "TodoList deleted",
+            todo: deletedTodoList,
+            todos: allTodoLists,
+        });
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.deleteTodoList = deleteTodoList;
 const getTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todos = yield todo_1.default.find();

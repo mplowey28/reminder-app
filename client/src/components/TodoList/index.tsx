@@ -8,7 +8,7 @@ type Props = TodoListProps & {
 	deleteTodoList: (_id: string) => void;
 };
 
-const TodoList: React.FC<Props> = () => {
+const TodoList: React.FC<Props> = ({ deleteTodoList, todoList }) => {
 	const [todos, setTodos] = useState<ITodo[]>([]);
 
 	useEffect(() => {
@@ -57,7 +57,6 @@ const TodoList: React.FC<Props> = () => {
 
 	return (
 		<main className='App'>
-			<h1>Reminders</h1>
 			<AddTodo saveTodo={handleSaveTodo} />
 			{todos.map((todo: ITodo) => (
 				<TodoItem
@@ -66,6 +65,7 @@ const TodoList: React.FC<Props> = () => {
 					deleteTodo={handleDeleteTodo}
 					todo={todo}
 				/>
+				
 			))}
 		</main>
 	);

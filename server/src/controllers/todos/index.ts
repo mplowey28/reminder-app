@@ -31,6 +31,22 @@ const addTodoList = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
+const deleteTodoList = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const deletedTodoList: ITodoList | null = await TodoList.findByIdAndRemove(
+			req.params.id
+		);
+		const allTodoLists: ITodoList[] = await Todo.find();
+		res.status(200).json({
+			message: "TodoList deleted",
+			todo: deletedTodoList,
+			todos: allTodoLists,
+		});
+	} catch (error) {
+		throw error;
+	}
+};
+
 const getTodos = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const todos: ITodo[] = await Todo.find();
@@ -98,4 +114,4 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-export { getTodoLists, addTodoList, getTodos, addTodo, updateTodo, deleteTodo };
+export { getTodoLists, addTodoList, deleteTodoList, getTodos, addTodo, updateTodo, deleteTodo };

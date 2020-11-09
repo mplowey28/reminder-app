@@ -33,7 +33,7 @@ body {
 }
 
 .Card--text h1 {
-	color: #ff9900;
+	color: #52d6f4;
 }
 
 .Card--button button {
@@ -72,14 +72,14 @@ body {
 .Form input {
 	background: #f5f6f7;
 	padding: 0.5rem 1rem;
-	border: 1px solid #ff9900;
+	border: 1px solid #52d6f4;
 	border-radius: 10px;
 	display: block;
 	margin: 0.3rem 1rem 0 0;
 }
 
 .Form button {
-	background: #ff9900;
+	background: #52d6f4;
 	color: #fff;
 	padding: 0.5rem 1rem;
 	border-radius: 20px;
