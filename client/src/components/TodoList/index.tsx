@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import TodoItem from '../TodoItem'
-import AddTodo from "../AddTodoItem";
-import { getTodos, addTodo, updateTodo, deleteTodo } from "../../API";
+import React from "react";
+import { Link } from "react-router-dom";
 
 type Props = TodoListProps & {
 	updateTodoList: (todoList: ITodoList) => void;
@@ -9,64 +7,27 @@ type Props = TodoListProps & {
 };
 
 const TodoList: React.FC<Props> = ({ deleteTodoList, todoList }) => {
-	const [todos, setTodos] = useState<ITodo[]>([]);
-
-	useEffect(() => {
-		fetchTodos();
-	}, []);
-
-	const fetchTodos = () => {
-		getTodos()
-			.then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
-			.catch((err: Error) => console.log(err));
-	};
-
-	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
-		e.preventDefault();
-		addTodo(formData)
-			.then(({ status, data }) => {
-				if (status !== 201) {
-					throw new Error("Error! Todo not saved");
-				}
-				setTodos(data.todos);
-			})
-			.catch(err => console.log(err));
-	};
-
-	const handleUpdateTodo = (todo: ITodo) => {
-		updateTodo(todo)
-			.then(({ status, data }) => {
-				if (status !== 200) {
-					throw new Error("Error! Todo not updated");
-				}
-				setTodos(data.todos);
-			})
-			.catch(err => console.log(err));
-	};
-
-	const handleDeleteTodo = (_id: string) => {
-		deleteTodo(_id)
-			.then(({ status, data }) => {
-				if (status !== 200) {
-					throw new Error("Error! Todo not deleted");
-				}
-				setTodos(data.todos);
-			})
-			.catch(err => console.log(err));
-	};
-
+	const { _id, name, createdAt } = todoList;
 	return (
-		<main className='App'>
-			<AddTodo saveTodo={handleSaveTodo} />
-			{todos.map((todo: ITodo) => (
-				<TodoItem
-					key={todo._id}
-					updateTodo={handleUpdateTodo}
-					deleteTodo={handleDeleteTodo}
-					todo={todo}
-				/>
-				
-			))}
-		</main>
+		<div className='Card'>
+			<Link to={`/todolists?id=${_id}`}>
+				<div>
+					<h2>Name: {name}</h2>
+				</div>
+				<div>
+					<h2>Created on: {createdAt}</h2>
+				</div>
+			</Link>
+			<div className='Card--button'>
+				<button
+					onClick={() => deleteTodoList(_id)}
+					className='Card--button__delete'
+				>
+					Delete
+				</button>
+			</div>
+		</div>
 	);
 };
+
+export default TodoList;

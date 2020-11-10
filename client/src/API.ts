@@ -73,8 +73,6 @@ export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
 	}
 };
 
-
-
 export const addTodo = async (
 	formData: ITodo
 ): Promise<AxiosResponse<ApiDataType>> => {
@@ -83,7 +81,7 @@ export const addTodo = async (
 			name: formData.name,
 			description: formData.description,
 			status: false,
-			cost: formData.cost
+			cost: formData.cost,
 		};
 
 		const saveTodo: AxiosResponse<ApiDataType> = await axios.post(
