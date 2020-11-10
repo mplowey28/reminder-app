@@ -1,16 +1,15 @@
-
 interface ITodoList {
-	_id?: string;
+	_id: string;
 	name: string;
 	status: boolean;
 
-	todos?: ITodo[]
+	todos?: ITodo[];
 	createdAt?: string;
 	updatedAt?: string;
 }
 
 interface TodoListProps {
-	todoList: ITodoList
+	todoList: ITodoList;
 }
 
 interface ITodo {
@@ -35,3 +34,7 @@ type ApiDataType = {
 	todo?: ITodo;
 	todoList?: ITodoList;
 };
+
+interface ILocation {
+	location: { search: string };
+}

@@ -18,7 +18,12 @@ const AddTodoList: React.FC<Props> = ({ saveTodoList }) => {
 		<form className='Form' onSubmit={e => saveTodoList(e, formData)}>
 			<div>
 				<div>
-					<input placeholder="e.x., Grocery list" onChange={handleForm} type='text' id='name' />
+					<input
+						placeholder='e.x., Grocery list'
+						onChange={handleForm}
+						type='text'
+						id='name'
+					/>
 				</div>
 			</div>
 			<button>Create Todo List</button>
