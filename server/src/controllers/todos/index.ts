@@ -10,7 +10,19 @@ const getTodoLists = async (req: Request, res: Response): Promise<void> => {
 	} catch (error) {
 		throw error;
 	}
-}
+};
+
+const getTodoList = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const id: string = req.params.id;
+		const todoList: ITodoList[] | null | ITodoList = await TodoList.findById(
+			`${id}`
+		);
+		res.status(200).json({ todoList });
+	} catch (error) {
+		throw error;
+	}
+};
 
 const addTodoList = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -23,9 +35,11 @@ const addTodoList = async (req: Request, res: Response): Promise<void> => {
 		const newTodoList: ITodoList = await todoList.save();
 		const allTodoLists: ITodoList[] = await TodoList.find();
 
-		res
-			.status(201)
-			.json({ message: "TodoList added", todoList: newTodoList, todoLists: allTodoLists });
+		res.status(201).json({
+			message: "TodoList added",
+			todoList: newTodoList,
+			todoLists: allTodoLists,
+		});
 	} catch (error) {
 		throw error;
 	}
@@ -36,7 +50,7 @@ const deleteTodoList = async (req: Request, res: Response): Promise<void> => {
 		const deletedTodoList: ITodoList | null = await TodoList.findByIdAndRemove(
 			req.params.id
 		);
-		const allTodoLists: ITodoList[] = await Todo.find();
+		const allTodoLists: ITodoList[] = await TodoList.find();
 		res.status(200).json({
 			message: "TodoList deleted",
 			todo: deletedTodoList,
@@ -47,31 +61,26 @@ const deleteTodoList = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getTodos = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const todos: ITodo[] = await Todo.find();
-		res.status(200).json({ todos });
-	} catch (error) {
-		throw error;
-	}
-};
-
 const addTodo = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const body = req.body as Pick<ITodo, "name" | "description" | "status">;
+		const listId = req.params.id;
+		const body = req.body as Pick<
+			ITodo,
+			"name" | "description" | "cost" | "status"
+		>;
 
 		const todo: ITodo = new Todo({
 			name: body.name,
 			description: body.description,
+			cost: body.cost,
 			status: body.status,
 		});
+		const todoAdded = await TodoList.updateOne(
+			{ _id: listId },
+			{ $push: { todos: todo } }
+		);
 
-		const newTodo: ITodo = await todo.save();
-		const allTodos: ITodo[] = await Todo.find();
-
-		res
-			.status(201)
-			.json({ message: "Todo added", todo: newTodo, todos: allTodos });
+		res.status(201).json({ message: "Todo added", todo: todoAdded });
 	} catch (error) {
 		throw error;
 	}
@@ -80,11 +89,11 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
 const updateTodo = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const {
-			params: { id },
+			params: { id, listId },
 			body,
 		} = req;
-		const updateTodo: ITodo | null = await Todo.findByIdAndUpdate(
-			{ _id: id },
+		const updateTodo: ITodoList | null = await TodoList.findByIdAndUpdate(
+			{ _id: listId },
 			body
 		);
 		const allTodos: ITodo[] = await Todo.find();
@@ -100,10 +109,13 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
 
 const deleteTodo = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
-			req.params.id
+		const listId = req.params.listId;
+		const todoId = req.params.id;
+		const deletedTodo: ITodoList | null = await TodoList.findByIdAndUpdate(
+			listId,
+			{ $pull: { todos: { _id: todoId } } }
 		);
-		const allTodos: ITodo[] = await Todo.find();
+		const allTodos: ITodoList[] = await TodoList.find();
 		res.status(200).json({
 			message: "Todo deleted",
 			todo: deletedTodo,
@@ -114,4 +126,11 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-export { getTodoLists, addTodoList, deleteTodoList, getTodos, addTodo, updateTodo, deleteTodo };
+export {
+	getTodoLists,
+	addTodoList,
+	deleteTodoList,
+	addTodo,
+	updateTodo,
+	deleteTodo,
+};

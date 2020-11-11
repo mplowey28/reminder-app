@@ -17,7 +17,7 @@ interface ITodo {
 	name: string;
 	description: string;
 	status: boolean;
-	cost: number;
+	cost?: number;
 	createdAt?: string;
 	updatedAt?: string;
 }

@@ -1,48 +1,47 @@
 import React, { useState, useEffect } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
-import { getTodos, addTodo, updateTodo, deleteTodo } from "../../API";
+import { addTodo, updateTodo, deleteTodo } from "../../API";
 import AddTodo from "../AddTodo";
 import TodoItem from "../TodoItem";
-let socket;
+let socket: SocketIOClient.Socket;
 
-type Props = TodoProps & {
-	updateTodo: (todo: ITodo) => void;
-	deleteTodo: (_id: string) => void;
-};
+type Props = TodoProps &
+	TodoListProps & {
+		updateTodo: (todo: ITodo) => void;
+		deleteTodo: (_id: string) => void;
+	};
 
 const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
-	const [id, setId] = useState<string | string[] | null>();
-	const [todos, setTodos] = useState<ITodo[]>([]);
+	const queryData = queryString.parse(location.search);
+	const [newId, setNewId] = useState<string>(`${queryData.id}`);
+	const [todos, setTodos] = useState<ITodo[] | undefined>([]);
 	const ENDPOINT = "localhost:4000";
 
-	useEffect(() => {
-		fetchTodoLists();
-		const { id } = queryString.parse(location.search);
-		socket = io(ENDPOINT);
-		setId(id);
-	}, [ENDPOINT, location.search]);
-
-	const fetchTodoLists = () => {
-		getTodos()
-			.then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
-			.catch((err: Error) => console.log(err));
+	const getTodoList = (todoList: ITodoList) => {
+		setTodos(todoList.todos);
 	};
+	useEffect(() => {
+		socket = io(ENDPOINT);
+		socket.emit("initial_data", newId);
+		socket.on("get_data", getTodoList);
+	}, [ENDPOINT, location.search]);
 
 	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
 		e.preventDefault();
-		addTodo(formData)
+		addTodo(formData, newId)
 			.then(({ status, data }) => {
 				if (status !== 201) {
 					throw new Error("Error! Todo not saved");
 				}
+				console.log(data.todos);
 				setTodos(data.todos);
 			})
 			.catch(err => console.log(err));
 	};
 
 	const handleUpdateTodo = (todo: ITodo) => {
-		updateTodo(todo)
+		updateTodo(todo, newId)
 			.then(({ status, data }) => {
 				if (status !== 200) {
 					throw new Error("Error! Todo not updated");
@@ -53,7 +52,7 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 	};
 
 	const handleDeleteTodo = (_id: string) => {
-		deleteTodo(_id)
+		deleteTodo(_id, newId)
 			.then(({ status, data }) => {
 				if (status !== 200) {
 					throw new Error("Error! Todo not deleted");
@@ -66,14 +65,18 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 	return (
 		<main className='App'>
 			<AddTodo saveTodo={handleSaveTodo} />
-			{todos.map((todo: ITodo) => (
-				<TodoItem
-					key={todo._id}
-					todo={todo}
-					updateTodo={handleUpdateTodo}
-					deleteTodo={handleDeleteTodo}
-				/>
-			))}
+			{!todos ? (
+				<h1>No todos</h1>
+			) : (
+				todos.map((todo: ITodo) => (
+					<TodoItem
+						key={todo._id}
+						todo={todo}
+						updateTodo={handleUpdateTodo}
+						deleteTodo={handleDeleteTodo}
+					/>
+				))
+			)}
 		</main>
 	);
 };
