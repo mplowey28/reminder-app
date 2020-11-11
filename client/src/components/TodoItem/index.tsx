@@ -1,11 +1,6 @@
 import React from "react";
 
-type Props = TodoProps & {
-	updateTodo: (todo: ITodo) => void;
-	deleteTodo: (_id: string) => void;
-};
-
-const Todo: React.FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
+const Todo: React.FC<TodoProps> = ({ todo }) => {
 	const checkTodo: string = todo.status ? `line-through` : "";
 	return (
 		<div className='Card'>
@@ -14,18 +9,10 @@ const Todo: React.FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
 				<span className={checkTodo}>{todo.description}</span>
 			</div>
 			<div className='Card--button'>
-				<button
-					onClick={() => updateTodo(todo)}
-					className={todo.status ? `hide-button` : "Card--button__done"}
-				>
+				<button className={todo.status ? `hide-button` : "Card--button__done"}>
 					Complete
 				</button>
-				<button
-					onClick={() => deleteTodo(todo._id)}
-					className='Card--button__delete'
-				>
-					Delete
-				</button>
+				<button className='Card--button__delete'>Delete</button>
 			</div>
 		</div>
 	);
