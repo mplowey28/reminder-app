@@ -1,22 +1,25 @@
-import { Router, Response, Request } from "express";
+import { Router } from "express";
 import {
 	getTodoLists,
-	getTodoList,
 	addTodoList,
 	deleteTodoList,
-	getTodos,
+	addTodo,
+	updateTodo,
+	deleteTodo,
 } from "../controllers/todos";
 
 const router: Router = Router();
 
 router.get("/todoLists", getTodoLists);
 
-router.get("/todoLists/:id", getTodoList);
-
 router.post("/add-todolist", addTodoList);
 
 router.delete("/delete-todolist/:id", deleteTodoList);
 
-router.get("/todos", getTodos);
+router.post("/add-todo/:id", addTodo);
+
+router.put("/edit-todo/:id/:listId", updateTodo);
+
+router.delete("/delete-todo/:id/:listId", deleteTodo);
 
 export default router;
