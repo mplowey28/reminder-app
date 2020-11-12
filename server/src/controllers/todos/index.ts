@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { ITodo, ITodoList } from "./../../types/todo";
+import mongoose from "mongoose";
 import Todo from "../../models/todo";
 import TodoList from "../../models/todoList";
 
@@ -56,19 +57,15 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
 			ITodo,
 			"name" | "description" | "cost" | "status"
 		>;
-
 		const todo: ITodo = new Todo({
 			name: body.name,
 			description: body.description,
 			cost: body.cost,
 			status: body.status,
 		});
-		const todoAdded = await TodoList.updateOne(
-			{ _id: listId },
-			{ $push: { todos: todo } }
-		);
+		await TodoList.updateOne({ _id: listId }, { $push: { todos: todo } });
 
-		res.status(201).json({ message: "Todo added", todo: todoAdded });
+		res.status(201).json({ message: "Todo added" });
 	} catch (error) {
 		throw error;
 	}
@@ -76,19 +73,14 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
 
 const updateTodo = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const {
-			params: { id, listId },
-			body,
-		} = req;
-		const updateTodo: ITodoList | null = await TodoList.findByIdAndUpdate(
-			{ _id: listId },
-			body
+		const listId = mongoose.Types.ObjectId(req.params.listId);
+		const todoId = mongoose.Types.ObjectId(req.params.id);
+		await TodoList.findOneAndUpdate(
+			{ _id: listId, "todos._id": todoId },
+			{ $set: { "todos.$.status": true } }
 		);
-		const allTodos: ITodoList[] = await TodoList.find();
 		res.status(200).json({
 			message: "Todo updated",
-			todo: updateTodo,
-			todos: allTodos,
 		});
 	} catch (error) {
 		throw error;
@@ -97,17 +89,17 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
 
 const deleteTodo = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const listId = req.params.listId;
-		const todoId = req.params.id;
-		const deletedTodo: ITodoList | null = await TodoList.findByIdAndUpdate(
-			listId,
-			{ $pull: { todos: { _id: todoId } } }
+		const listId = mongoose.Types.ObjectId(req.params.listId);
+		const todoId = mongoose.Types.ObjectId(req.params.id);
+		await TodoList.updateOne(
+			{ _id: listId },
+			{
+				$pull: { todos: { _id: todoId } },
+			}
 		);
-		const allTodos: ITodoList[] = await TodoList.find();
+
 		res.status(200).json({
 			message: "Todo deleted",
-			todo: deletedTodo,
-			todos: allTodos,
 		});
 	} catch (error) {
 		throw error;

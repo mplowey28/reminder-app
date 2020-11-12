@@ -17,7 +17,7 @@ const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
 io.on("connection", socket => {
     console.log("New client connected" + socket.id);
-    socket.on("initial_data", id => {
+    socket.on("fetch_data", id => {
         todoList_1.default.findById(id)
             .then(docs => {
             socket.emit("get_data", docs);

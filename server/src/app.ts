@@ -17,7 +17,7 @@ const io = ioserver(server);
 
 io.on("connection", socket => {
 	console.log("New client connected" + socket.id);
-	socket.on("initial_data", id => {
+	socket.on("fetch_data", id => {
 		TodoList.findById(id)
 			.then(docs => {
 				socket.emit("get_data", docs);
