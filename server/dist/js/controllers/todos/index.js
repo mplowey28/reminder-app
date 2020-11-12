@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.deleteTodoList = exports.addTodoList = exports.getTodoLists = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const todo_1 = __importDefault(require("../../models/todo"));
 const todoList_1 = __importDefault(require("../../models/todoList"));
 const getTodoLists = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,8 +71,8 @@ const addTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             cost: body.cost,
             status: body.status,
         });
-        const todoAdded = yield todoList_1.default.updateOne({ _id: listId }, { $push: { todos: todo } });
-        res.status(201).json({ message: "Todo added", todo: todoAdded });
+        yield todoList_1.default.updateOne({ _id: listId }, { $push: { todos: todo } });
+        res.status(201).json({ message: "Todo added" });
     }
     catch (error) {
         throw error;
@@ -80,13 +81,11 @@ const addTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.addTodo = addTodo;
 const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { params: { id, listId }, body, } = req;
-        const updateTodo = yield todoList_1.default.findByIdAndUpdate({ _id: listId }, body);
-        const allTodos = yield todoList_1.default.find();
+        const listId = mongoose_1.default.Types.ObjectId(req.params.listId);
+        const todoId = mongoose_1.default.Types.ObjectId(req.params.id);
+        yield todoList_1.default.findOneAndUpdate({ _id: listId, "todos._id": todoId }, { $set: { "todos.$.status": true } });
         res.status(200).json({
             message: "Todo updated",
-            todo: updateTodo,
-            todos: allTodos,
         });
     }
     catch (error) {
@@ -96,14 +95,13 @@ const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateTodo = updateTodo;
 const deleteTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const listId = req.params.listId;
-        const todoId = req.params.id;
-        const deletedTodo = yield todoList_1.default.findByIdAndUpdate(listId, { $pull: { todos: { _id: todoId } } });
-        const allTodos = yield todoList_1.default.find();
+        const listId = mongoose_1.default.Types.ObjectId(req.params.listId);
+        const todoId = mongoose_1.default.Types.ObjectId(req.params.id);
+        yield todoList_1.default.updateOne({ _id: listId }, {
+            $pull: { todos: { _id: todoId } },
+        });
         res.status(200).json({
             message: "Todo deleted",
-            todo: deletedTodo,
-            todos: allTodos,
         });
     }
     catch (error) {
