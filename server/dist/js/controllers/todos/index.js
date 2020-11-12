@@ -25,16 +25,6 @@ const getTodoLists = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getTodoLists = getTodoLists;
-const getTodoList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = req.params.id;
-        const todoList = yield todoList_1.default.findById(`${id}`);
-        res.status(200).json({ todoList });
-    }
-    catch (error) {
-        throw error;
-    }
-});
 const addTodoList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
@@ -92,7 +82,7 @@ const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { params: { id, listId }, body, } = req;
         const updateTodo = yield todoList_1.default.findByIdAndUpdate({ _id: listId }, body);
-        const allTodos = yield todo_1.default.find();
+        const allTodos = yield todoList_1.default.find();
         res.status(200).json({
             message: "Todo updated",
             todo: updateTodo,

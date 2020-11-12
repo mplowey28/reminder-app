@@ -18,9 +18,9 @@ const io = ioserver(server);
 io.on("connection", socket => {
 	console.log("New client connected" + socket.id);
 	socket.on("initial_data", id => {
-		TodoList.findById(`${id}`)
+		TodoList.findById(id)
 			.then(docs => {
-				io.sockets.emit("get_data", docs);
+				socket.emit("get_data", docs);
 			})
 			.catch(err => console.log(err));
 	});

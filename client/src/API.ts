@@ -64,7 +64,7 @@ export const deleteTodoList = async (
 
 export const addTodo = async (
 	formData: ITodo,
-	id: string
+	id: any
 ): Promise<AxiosResponse<ApiDataType>> => {
 	try {
 		const todo: Omit<ITodo, "_id"> = {
