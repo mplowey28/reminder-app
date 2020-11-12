@@ -4,7 +4,10 @@ import io from "socket.io-client";
 import { addTodo, updateTodo, deleteTodo } from "../../API";
 import AddTodo from "../AddTodo";
 import TodoItem from "../TodoItem";
+
 let socket: SocketIOClient.Socket;
+const ENDPOINT = "localhost:4000";
+socket = io(ENDPOINT);
 
 type Props = TodoProps &
 	TodoListProps & {
@@ -14,18 +17,15 @@ type Props = TodoProps &
 
 const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 	const queryData = queryString.parse(location.search);
-	const [newId, setNewId] = useState<string>(`${queryData.id}`);
+	const newId: any = queryData.id;
 	const [todos, setTodos] = useState<ITodo[] | undefined>([]);
-	const ENDPOINT = "localhost:4000";
 
-	const getTodoList = (todoList: ITodoList) => {
-		setTodos(todoList.todos);
-	};
 	useEffect(() => {
-		socket = io(ENDPOINT);
 		socket.emit("initial_data", newId);
-		socket.on("get_data", getTodoList);
-	}, [ENDPOINT, location.search]);
+		socket.on("get_data", (data: ITodoList) => {
+			setTodos(data.todos);
+		});
+	}, [newId, todos]);
 
 	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
 		e.preventDefault();
@@ -34,7 +34,6 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 				if (status !== 201) {
 					throw new Error("Error! Todo not saved");
 				}
-				console.log(data.todos);
 				setTodos(data.todos);
 			})
 			.catch(err => console.log(err));

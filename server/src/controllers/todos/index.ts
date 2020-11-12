@@ -12,18 +12,6 @@ const getTodoLists = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getTodoList = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const id: string = req.params.id;
-		const todoList: ITodoList[] | null | ITodoList = await TodoList.findById(
-			`${id}`
-		);
-		res.status(200).json({ todoList });
-	} catch (error) {
-		throw error;
-	}
-};
-
 const addTodoList = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const body = req.body as Pick<ITodoList, "name" | "status">;
@@ -96,7 +84,7 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
 			{ _id: listId },
 			body
 		);
-		const allTodos: ITodo[] = await Todo.find();
+		const allTodos: ITodoList[] = await TodoList.find();
 		res.status(200).json({
 			message: "Todo updated",
 			todo: updateTodo,
