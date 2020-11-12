@@ -5,12 +5,29 @@ import cors from "cors";
 import http from "http";
 import ioserver, { Socket } from "socket.io";
 import todoRoutes from "./routes";
+import Todo from "./models/todo";
+import TodoList from "./models/todoList";
+import { ITodo, ITodoList } from "./types/todo";
+
+const PORT: string | number = process.env.PORT || 4000;
 
 const app: Express = express();
 const server = http.createServer(app);
 const io = ioserver(server);
 
-const PORT: string | number = process.env.PORT || 4000;
+io.on("connection", socket => {
+	console.log("New client connected" + socket.id);
+	socket.on("initial_data", id => {
+		TodoList.findById(id)
+			.then(docs => {
+				socket.emit("get_data", docs);
+			})
+			.catch(err => console.log(err));
+	});
+	socket.on("disconnect", () => {
+		console.log("user disconnected");
+	});
+});
 
 app.use(cors());
 app.use(BodyParser.json());

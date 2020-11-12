@@ -1,9 +1,8 @@
-import { Router, Response, Request } from "express";
+import { Router } from "express";
 import {
 	getTodoLists,
 	addTodoList,
 	deleteTodoList,
-	getTodos,
 	addTodo,
 	updateTodo,
 	deleteTodo,
@@ -17,12 +16,10 @@ router.post("/add-todolist", addTodoList);
 
 router.delete("/delete-todolist/:id", deleteTodoList);
 
-router.get("/todos", getTodos);
+router.post("/add-todo/:id", addTodo);
 
-router.post("/add-todo", addTodo);
+router.put("/edit-todo/:id/:listId", updateTodo);
 
-router.put("/edit-todo/:id", updateTodo);
-
-router.delete("/delete-todo/:id", deleteTodo);
+router.delete("/delete-todo/:id/:listId", deleteTodo);
 
 export default router;

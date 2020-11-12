@@ -62,19 +62,9 @@ export const deleteTodoList = async (
 	}
 };
 
-export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
-	try {
-		const todos: AxiosResponse<ApiDataType> = await axios.get(
-			baseUrl + "/todos"
-		);
-		return todos;
-	} catch (error) {
-		throw new Error(error);
-	}
-};
-
 export const addTodo = async (
-	formData: ITodo
+	formData: ITodo,
+	id: any
 ): Promise<AxiosResponse<ApiDataType>> => {
 	try {
 		const todo: Omit<ITodo, "_id"> = {
@@ -85,7 +75,7 @@ export const addTodo = async (
 		};
 
 		const saveTodo: AxiosResponse<ApiDataType> = await axios.post(
-			baseUrl + "/add-todo",
+			`${baseUrl}/add-todo/${id}`,
 			todo
 		);
 		return saveTodo;
@@ -95,14 +85,15 @@ export const addTodo = async (
 };
 
 export const updateTodo = async (
-	todo: ITodo
+	todo: ITodo,
+	id: string
 ): Promise<AxiosResponse<ApiDataType>> => {
 	try {
 		const todoUpdate: Pick<ITodo, "status"> = {
 			status: true,
 		};
 		const updatedTodo: AxiosResponse<ApiDataType> = await axios.put(
-			`${baseUrl}/edit-todo/${todo._id}`,
+			`${baseUrl}/edit-todo/${todo._id}/${id}`,
 			todoUpdate
 		);
 		return updatedTodo;
@@ -112,11 +103,12 @@ export const updateTodo = async (
 };
 
 export const deleteTodo = async (
-	_id: string
+	_id: string,
+	newId: string
 ): Promise<AxiosResponse<ApiDataType>> => {
 	try {
 		const deletedTodo: AxiosResponse<ApiDataType> = await axios.delete(
-			`${baseUrl}/delete-todo/${_id}`
+			`${baseUrl}/delete-todo/${_id}/${newId}`
 		);
 		return deletedTodo;
 	} catch (error) {
