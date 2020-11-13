@@ -10,6 +10,10 @@ const todoSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    cost: {
+        type: String,
+        required: false,
+    },
     status: {
         type: Boolean,
         required: true,

@@ -12,6 +12,10 @@ const todoSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
+		cost: {
+			type: String,
+			required: false,
+		},
 
 		status: {
 			type: Boolean,

@@ -56,7 +56,6 @@ const App: React.FC = () => {
 			})
 			.catch(err => console.log(err));
 	};
-
 	return (
 		<main className='App'>
 			<AddTodoList saveTodoList={handleSaveTodoList} />

@@ -21,6 +21,7 @@ io.on("connection", socket => {
         todoList_1.default.findById(id)
             .then(docs => {
             socket.emit("get_data", docs);
+            socket.broadcast.emit("get_data", docs);
         })
             .catch(err => console.log(err));
     });
