@@ -93,7 +93,9 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 					/>
 				))
 			)}
-			<div>{todos !== undefined ? <h3>total costs: {costs}</h3> : null}</div>
+			<div className='cost'>
+				{todos !== undefined ? <h3>total costs: {costs}</h3> : null}
+			</div>
 		</main>
 	);
 };

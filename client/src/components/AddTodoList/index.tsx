@@ -17,17 +17,18 @@ const AddTodoList: React.FC<Props> = ({ saveTodoList }) => {
 	return (
 		<form className='Form' onSubmit={e => saveTodoList(e, formData)}>
 			<div>
-				<div>
-					<input
-						placeholder='e.x., Grocery list'
-						onChange={handleForm}
-						type='text'
-						id='name'
-						required
-					/>
-				</div>
+				<input
+					className='add-todo-list'
+					placeholder='e.x., Grocery list'
+					onChange={handleForm}
+					type='text'
+					id='name'
+					required
+				/>
 			</div>
-			<button>Create Todo List</button>
+			<div>
+				<button>Create Todo List</button>
+			</div>
 		</form>
 	);
 };

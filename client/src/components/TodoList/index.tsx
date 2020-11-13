@@ -11,13 +11,13 @@ const TodoList: React.FC<Props> = ({ deleteTodoList, todoList }) => {
 		<div className='Card'>
 			<Link to={`/todolists?id=${_id}`} className='todolist-link'>
 				<div>
-					<h2>Name: {name}</h2>
+					<h1 className='list-name-label'>{name}</h1>
 				</div>
 				<div>
-					<h2>
-						Created on:{" "}
+					<span>Created on: </span>
+					<span>
 						{createdAt !== undefined ? createdAt.substr(0, 10) : null}
-					</h2>
+					</span>
 				</div>
 			</Link>
 			<div className='Card--button'>

@@ -3,6 +3,7 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+
 body {
 	font-family: "Roboto", sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -12,12 +13,12 @@ body {
 }
 
 #root {
-	height: 100vh;
+	height: 100%;
 }
 
 .App {
-	max-width: 728px;
-	margin: 4rem auto;
+	max-width: 800px;
+	margin: 0rem auto;
 }
 
 .App > h1 {
@@ -58,27 +59,40 @@ body {
 .Card--button__delete {
 	border: 1px solid #ca0000;
 	color: #ca0000;
+	text-transform: uppercase;
+	transition: all 0.4s ease 0s;
+}
+
+.Card--button__delete:hover {
+	border: 1px solid #ca0000;
+	background-color: #ca0000;
+	color: #f5f6f7;
+	transition: all 0.4s ease 0s;
 }
 
 .Card--button__done {
 	border: 1px solid #00aa69;
 	color: #00aa69;
 	margin-right: 1rem;
+	text-transform: uppercase;
+	transition: all 0.4s ease 0s;
+}
+
+.Card--button__done:hover {
+	border: 1px solid #00aa69;
+	background-color: #00aa69;
+	color: #f5f6f7;
+	margin-right: 1rem;
+	transition: all 0.4s ease 0s;
 }
 
 .Form {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1rem;
-	background: #11181c;
-	margin-bottom: 1rem;
-}
-
-.Form > div {
+	margin-top: 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 1rem;
+	background: #11181c;
 }
 
 .Form input {
@@ -87,7 +101,11 @@ body {
 	border: 1px solid #53bce6;
 	border-radius: 5px;
 	display: block;
-	margin: 0.3rem 1rem 0 0;
+	margin: 0rem 1rem 0 0;
+}
+
+.add-todo-list {
+	padding-right: 600px;
 }
 
 .Form button {
@@ -97,6 +115,16 @@ body {
 	border-radius: 5px;
 	cursor: pointer;
 	border: none;
+	text-transform: uppercase;
+	display: inline-block;
+	transition: all 0.4s ease 0s;
+}
+
+.Form button:hover {
+	background: #53bce6;
+	letter-spacing: 1px;
+	box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+	transition: all 0.4s ease 0s;
 }
 
 .line-through {
@@ -106,4 +134,50 @@ body {
 
 .hide-button {
 	display: none;
+}
+
+.cost {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 1rem;
+}
+
+span {
+	color: #677282;
+}
+
+@media screen and (max-width: 768px) {
+	.Card {
+		justify-content: space-between;
+		align-items: center;
+		text-align: left;
+	}
+	.Card--button__done {
+		margin-right: 0;
+	}
+	.Card--button {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+	.Card--button button {
+		margin-bottom: 1rem;
+	}
+	.Form {
+		margin-top: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.Form input {
+		width: 100%;
+		padding: 0.5rem 1rem;
+		margin: 0rem 0 10px 0;
+	}
+	.Form button {
+		width: 100%;
+		padding: 0.5rem 1rem;
+	}
 }
