@@ -13,7 +13,7 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		fetchTodoLists();
-	}, [todoLists]);
+	}, []);
 
 	const fetchTodoLists = () => {
 		getTodoLists()
@@ -59,9 +59,7 @@ const App: React.FC = () => {
 
 	return (
 		<main className='App'>
-			<h1>Create a new todo list</h1>
 			<AddTodoList saveTodoList={handleSaveTodoList} />
-			<h1>- - - or join a previous list - - -</h1>
 			{todoLists &&
 				todoLists.map((todoList: ITodoList) => (
 					<TodoList

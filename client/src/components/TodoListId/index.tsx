@@ -20,18 +20,23 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 	const newId: any = queryData.id;
 	const [todos, setTodos] = useState<ITodo[] | undefined>([]);
 
-	useEffect(() => {
-		getTodos();
-	}, [newId]);
 	const getTodos = () => {
 		socket.emit("fetch_data", newId);
 	};
+
+	useEffect(() => {
+		getTodos();
+	}, [newId]);
+
 	useEffect(() => {
 		socket.on("get_data", (data: ITodoList) => {
 			setTodos(data.todos);
-			getTodos();
 		});
 	}, []);
+
+	useEffect(() => {
+		getTodos();
+	}, [newId]);
 
 	const handleSaveTodo = (e: React.FormEvent, formData: ITodo) => {
 		e.preventDefault();

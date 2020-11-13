@@ -7,6 +7,7 @@ type Props = TodoProps & {
 
 const Todo: React.FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
 	const checkTodo: string = todo.status ? `line-through` : "";
+	console.log(todo.name);
 	return (
 		<div className='Card'>
 			<div className='Card--text'>
