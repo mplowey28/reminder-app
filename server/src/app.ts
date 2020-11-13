@@ -5,9 +5,7 @@ import cors from "cors";
 import http from "http";
 import ioserver, { Socket } from "socket.io";
 import todoRoutes from "./routes";
-import Todo from "./models/todo";
 import TodoList from "./models/todoList";
-import { ITodo, ITodoList } from "./types/todo";
 
 const PORT: string | number = process.env.PORT || 4000;
 

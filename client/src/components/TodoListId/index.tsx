@@ -6,7 +6,7 @@ import AddTodo from "../AddTodo";
 import TodoItem from "../TodoItem";
 
 let socket: SocketIOClient.Socket;
-const ENDPOINT = "localhost:4000";
+const ENDPOINT = "https://git.heroku.com/react-reminder-app.git";
 socket = io(ENDPOINT);
 
 type Props = TodoProps &
