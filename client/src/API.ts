@@ -32,23 +32,6 @@ export const addTodoList = async (
 	}
 };
 
-export const updateTodoList = async (
-	todoList: ITodoList
-): Promise<AxiosResponse<ApiDataType>> => {
-	try {
-		const todoListUpdate: Pick<ITodoList, "status"> = {
-			status: true,
-		};
-		const updatedTodoList: AxiosResponse<ApiDataType> = await axios.put(
-			`${baseUrl}/edit-todo/${todoList._id}`,
-			todoListUpdate
-		);
-		return updatedTodoList;
-	} catch (error) {
-		throw new Error(error);
-	}
-};
-
 export const deleteTodoList = async (
 	_id: string
 ): Promise<AxiosResponse<ApiDataType>> => {

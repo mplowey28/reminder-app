@@ -23,6 +23,7 @@ const AddTodoList: React.FC<Props> = ({ saveTodoList }) => {
 						onChange={handleForm}
 						type='text'
 						id='name'
+						required
 					/>
 				</div>
 			</div>

@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 type Props = TodoListProps & {
-	updateTodoList: (todoList: ITodoList) => void;
 	deleteTodoList: (_id: string) => void;
 };
 

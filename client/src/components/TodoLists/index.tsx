@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TodoList from "../TodoList";
 import AddTodoList from "../AddTodoList";
-import {
-	getTodoLists,
-	addTodoList,
-	updateTodoList,
-	deleteTodoList,
-} from "../../API";
+import { getTodoLists, addTodoList, deleteTodoList } from "../../API";
 
 const App: React.FC = () => {
 	const [todoLists, setTodoLists] = useState<ITodoList[]>([]);
@@ -31,17 +26,7 @@ const App: React.FC = () => {
 					throw new Error("Error! TodoList not saved");
 				}
 				setTodoLists(data.todoLists);
-			})
-			.catch(err => console.log(err));
-	};
-
-	const handleUpdateTodoList = (todoList: ITodoList) => {
-		updateTodoList(todoList)
-			.then(({ status, data }) => {
-				if (status !== 200) {
-					throw new Error("Error! Todo not updated");
-				}
-				setTodoLists(data.todoLists);
+				fetchTodoLists();
 			})
 			.catch(err => console.log(err));
 	};
@@ -53,9 +38,11 @@ const App: React.FC = () => {
 					throw new Error("Error! TodoList not deleted");
 				}
 				setTodoLists(data.todoLists);
+				fetchTodoLists();
 			})
 			.catch(err => console.log(err));
 	};
+	console.log(todoLists);
 	return (
 		<main className='App'>
 			<AddTodoList saveTodoList={handleSaveTodoList} />
@@ -63,7 +50,6 @@ const App: React.FC = () => {
 				todoLists.map((todoList: ITodoList) => (
 					<TodoList
 						key={todoList._id}
-						updateTodoList={handleUpdateTodoList}
 						deleteTodoList={handleDeleteTodo}
 						todoList={todoList}
 					/>

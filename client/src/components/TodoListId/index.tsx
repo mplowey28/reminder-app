@@ -68,16 +68,16 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 			.catch(err => console.log(err));
 	};
 
-	const costs =
-		todos !== undefined
-			? todos
-					.map(item => item.cost)
-					.reduce(
-						(prev, next) =>
-							Number(prev !== undefined ? prev : 0) +
-							Number(next !== undefined ? next : 0)
-					)
-			: null;
+	const costs = todos
+		? todos
+				.map(item => (item.cost ? item.cost : 0))
+				.reduce(
+					(prev, next) =>
+						Number(prev !== undefined ? prev : 0) +
+						Number(next !== undefined ? next : 0),
+					0
+				)
+		: 0;
 	return (
 		<main className='App'>
 			<AddTodo saveTodo={handleSaveTodo} />
@@ -93,7 +93,7 @@ const TodoListId: React.FC<ILocation & Props> = ({ location }) => {
 					/>
 				))
 			)}
-			<div>{todos !== undefined ? <h3>{costs}</h3> : null}</div>
+			<div>{todos !== undefined ? <h3>total costs: {costs}</h3> : null}</div>
 		</main>
 	);
 };
