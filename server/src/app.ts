@@ -6,12 +6,19 @@ import http from "http";
 import ioserver, { Socket } from "socket.io";
 import todoRoutes from "./routes";
 import TodoList from "./models/todoList";
+import * as dotenv from "dotenv";
+import helmet from "helmet";
+dotenv.config();
 
 const PORT: string | number = process.env.PORT || 4000;
-
 const app: Express = express();
 const server = http.createServer(app);
 const io = ioserver(server);
+
+app.use(helmet());
+app.use(cors());
+app.use(BodyParser.json());
+app.use(todoRoutes);
 
 io.on("connection", socket => {
 	console.log("New client connected" + socket.id);
@@ -28,10 +35,11 @@ io.on("connection", socket => {
 	});
 });
 
-app.use(cors());
-app.use(BodyParser.json());
-app.use(todoRoutes);
-const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.cdfh2.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+const DBUSER = process.env.MONGO_USER;
+const DBPASSWORD = process.env.MONGO_PASSWORD;
+const DBNAME = process.env.MONGO_DB;
+
+const uri: string = `mongodb+srv://${DBUSER}:${DBPASSWORD}@cluster0.cdfh2.mongodb.net/${DBNAME}?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose.set("useFindAndModify", false);
 
@@ -39,6 +47,10 @@ mongoose.connect(uri, options).catch(error => {
 	throw error;
 });
 
-server.listen(PORT, () => {
+app.use((req, res) => {
+	res.end("Page Not Found");
+});
+
+server.listen(process.env.PORT || PORT, () => {
 	console.log(`App Server Listening at ${PORT}`);
 });

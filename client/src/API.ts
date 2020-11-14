@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const baseUrl: string = "http://localhost:4000";
+const baseUrl: string = "https://react-reminder-app.herokuapp.com";
 
 export const getTodoLists = async (): Promise<AxiosResponse<ApiDataType>> => {
 	try {
