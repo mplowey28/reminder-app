@@ -21,7 +21,6 @@ Built with:
 - React
 - Node.js
 - socket.io
-- Styled components
 
 # Features
 
